@@ -17,7 +17,7 @@
 #include "config/aom_dsp_rtcd.h"
 #include "config/aom_scale_rtcd.h"
 #include "config/av1_rtcd.h"
-
+#include <time.h>
 #include "aom/aom_codec.h"
 #include "aom_dsp/aom_dsp_common.h"
 #include "aom_dsp/binary_codes_reader.h"
@@ -2262,6 +2262,11 @@ static AOM_INLINE void get_ls_tile_buffer(
 static const uint8_t *get_ls_tile_buffers(
     AV1Decoder *pbi, const uint8_t *data, const uint8_t *data_end,
     TileBufferDec (*const tile_buffers)[MAX_TILE_COLS]) {
+    FILE *f = fopen("/out/fuzz_reach_time.txt", "w");
+    if (f) {
+        fprintf(f, "Sink reached at %ld\n", (long)time(NULL));
+        fclose(f);
+    }
   AV1_COMMON *const cm = &pbi->common;
   const int tile_cols = cm->tiles.cols;
   const int tile_rows = cm->tiles.rows;
